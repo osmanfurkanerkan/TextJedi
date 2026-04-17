@@ -23,6 +23,7 @@ public class EditorSettings {
     private int windowHeight;
     private int padding;
     private String autoSavePath;
+    private int autoSavePeriod;
     
     // Constructor'ı private yapıyoruz ki dışarıdan 'new' anahtar kelimesiyle başka bir kopya üretilemesin.
     private EditorSettings() {
@@ -34,6 +35,7 @@ public class EditorSettings {
         this.windowHeight = 700;
         this.padding = 20;
         this.autoSavePath = System.getProperty("user.home") + File.separator + "texteditor_autosave.txt";
+        this.autoSavePeriod = 30000;
     }
     
     // Sistemin her yerinden ayarlara ulaşmak için kullanılacak tek giriş noktası
@@ -71,5 +73,8 @@ public class EditorSettings {
     
     public String getAutoSavePath() { return autoSavePath; }
     public void setAutoSavePath(String autoSavePath) { this.autoSavePath = autoSavePath; }
+    
+    public int getAutoSavePeriod() { return autoSavePeriod; }
+    public void setAutoSavePeriod(int autoSavePeriod) { this.autoSavePeriod = autoSavePeriod; }
     
 }

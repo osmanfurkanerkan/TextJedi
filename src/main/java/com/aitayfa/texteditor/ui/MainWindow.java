@@ -119,8 +119,8 @@ public class MainWindow extends JFrame{
                 
         panel.add(scrollPane, BorderLayout.CENTER);
         
-        // auto save (30 saniyede bir)
-        javax.swing.Timer autoSaveTimer = new javax.swing.Timer(30000, e -> {
+        // auto save (default 30 saniyede bir)
+        javax.swing.Timer autoSaveTimer = new javax.swing.Timer(settings.getAutoSavePeriod(), e -> {
             String backupPath = EditorSettings.getInstance().getAutoSavePath();
             
             // Sadece metin kutusu boş değilse yedekle
