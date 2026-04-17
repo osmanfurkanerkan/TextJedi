@@ -94,17 +94,27 @@ public class MainWindow extends JFrame{
         int p = settings.getPadding();
         panel.setBorder(BorderFactory.createEmptyBorder(p,p,p,p));
         
-        JButton btnBack = uiFactory.createButton("<- Giriş Ekranına Dön");
-        btnBack.addActionListener(e -> cardLayout.show(mainPanel, "START_SCREEN"));
-        panel.add(btnBack, BorderLayout.NORTH);
-
         // editörün input kısmını oluşturacak metin kutusu
         textArea = uiFactory.createTextArea();
         
         // Yazıların taşmaması ve scroll (kaydırma) çubuğu çıkması için JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setBorder(null); // kenarlıkları kaldır
         
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuFile = new JMenu("Dosya");
+        JMenuItem itemSave = new JMenuItem("Kaydet");
+        JMenuItem itemBack = new JMenuItem("Giriş Ekranına Dön");
+        
+        Command saveCommand = new SaveFileCommand(this, textArea);
+        itemSave.addActionListener(e -> saveCommand.execute());
+        itemBack.addActionListener(e -> cardLayout.show(mainPanel, "START_SCREEN"));
+        
+        menuFile.add(itemSave);
+        menuFile.addSeparator();
+        menuFile.add(itemBack);
+        menuBar.add(menuFile);
+        panel.add(menuBar, BorderLayout.NORTH);
+                
         panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
