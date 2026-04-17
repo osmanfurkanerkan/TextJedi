@@ -21,6 +21,8 @@ public class DarkUIFactory implements UIFactory {
         button.setBackground(new Color(60, 60, 60)); // koyu gri
         button.setForeground(Color.WHITE); // beyaz yazı
         button.setFocusPainted(false);
+        button.setOpaque(true); // OS çizimlerini engellemek için
+        button.setBorderPainted(false);
         return button;
     }
 
