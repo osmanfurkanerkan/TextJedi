@@ -17,6 +17,9 @@ public class EditorSettings {
     private int fontSize;
     private String theme;
     private boolean wordWrapEnabled;
+    private int windowWidth;
+    private int windowHeight;
+    private int padding;
     
     // Constructor'ı private yapıyoruz ki dışarıdan 'new' anahtar kelimesiyle başka bir kopya üretilemesin.
     private EditorSettings() {
@@ -24,6 +27,9 @@ public class EditorSettings {
         this.fontSize = 14;
         this.theme = "Light Theme";
         this.wordWrapEnabled = true;
+        this.windowWidth = 1000;
+        this.windowHeight = 700;
+        this.padding = 20;
     }
     
     // Sistemin her yerinden ayarlara ulaşmak için kullanılacak tek giriş noktası
@@ -41,28 +47,22 @@ public class EditorSettings {
     
     // --- Getters ve Setters ---
 
-    public int getFontSize() {
-        return fontSize;
-    }
+    public int getFontSize() { return fontSize; }
+    public void setFontSize(int fontSize) { this.fontSize = fontSize; }
 
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
-    }
+    public String getTheme() { return theme; }
+    public void setTheme(String theme) { this.theme = theme; }
 
-    public String getTheme() {
-        return theme;
-    }
+    public boolean isWordWrapEnabled() { return wordWrapEnabled; }
+    public void setWordWrapEnabled(boolean wordWrapEnabled) { this.wordWrapEnabled = wordWrapEnabled; }
+    
+    public int getWindowWidth() { return windowWidth; }
+    public void setWindowWidth(int windowWidth) { this.windowWidth = windowWidth; }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
+    public int getWindowHeight() { return windowHeight; }
+    public void setWindowHeight(int windowHeight) { this.windowHeight = windowHeight; }
 
-    public boolean isWordWrapEnabled() {
-        return wordWrapEnabled;
-    }
-
-    public void setWordWrapEnabled(boolean wordWrapEnabled) {
-        this.wordWrapEnabled = wordWrapEnabled;
-    }
+    public int getPadding() { return padding; }
+    public void setPadding(int padding) { this.padding = padding; }
     
 }

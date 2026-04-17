@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 public class TextEditor {
     public static void main(String[] args) {
         EditorSettings settings = EditorSettings.getInstance();
-        settings.setTheme("Dark Theme");
+        //settings.setTheme("Dark Theme");
         
         // Swing arayüzlerini güvenli bir şekilde (Thread-Safe) başlatmak için kullanılması zorunludur.
         SwingUtilities.invokeLater(() -> {

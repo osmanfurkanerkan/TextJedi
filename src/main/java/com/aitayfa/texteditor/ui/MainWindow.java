@@ -20,7 +20,8 @@ public class MainWindow extends JFrame{
     private UIFactory uiFactory;
     
     public MainWindow(){
-        String currentTheme = EditorSettings.getInstance().getTheme();
+        EditorSettings settings = EditorSettings.getInstance();
+        String currentTheme = settings.getTheme();
         
         if(currentTheme.equals("Light Theme")){
             uiFactory = new LightUIFactory();
@@ -36,7 +37,7 @@ public class MainWindow extends JFrame{
         
         // pencerenin genel ayarları
         setTitle("TextEditor");
-        setSize(900,600);
+        setSize(settings.getWindowWidth(), settings.getWindowHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // ekranın ortası
         
@@ -74,9 +75,14 @@ public class MainWindow extends JFrame{
     
     // editör ekranı
     private JPanel createEditorScreen() {
+        EditorSettings settings = EditorSettings.getInstance();
         JPanel panel = uiFactory.createPanel();
         panel.setLayout(new BorderLayout()); // sağ-sol-üst-alt ve merkez yerleşimi
 
+        // kenarlardan pay
+        int p = settings.getPadding();
+        panel.setBorder(BorderFactory.createEmptyBorder(p,p,p,p));
+        
         JButton btnBack = uiFactory.createButton("<- Giriş Ekranına Dön");
         btnBack.addActionListener(e -> cardLayout.show(mainPanel, "START_SCREEN"));
         panel.add(btnBack, BorderLayout.NORTH);
