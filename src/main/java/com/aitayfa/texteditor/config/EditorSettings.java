@@ -22,7 +22,7 @@ public class EditorSettings {
     private EditorSettings() {
         // Uygulama ilk açıldığındaki varsayılan değerler
         this.fontSize = 14;
-        this.theme = "Light";
+        this.theme = "Light Theme";
         this.wordWrapEnabled = true;
     }
     

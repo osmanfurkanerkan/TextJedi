@@ -2,4 +2,5 @@ com/aitayfa/texteditor/ui/factory/LightUIFactory.class
 com/aitayfa/texteditor/ui/factory/DarkUIFactory.class
 com/aitayfa/texteditor/ui/factory/UIFactory.class
 com/aitayfa/texteditor/config/EditorSettings.class
+com/aitayfa/texteditor/ui/MainWindow.class
 com/aitayfa/texteditor/TextEditor.class

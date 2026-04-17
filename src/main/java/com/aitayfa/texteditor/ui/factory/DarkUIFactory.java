@@ -12,6 +12,7 @@ package com.aitayfa.texteditor.ui.factory;
 import javax.swing.*;
 import java.awt.*;
 
+// CONCRETE FACTORY
 public class DarkUIFactory implements UIFactory {
     
     @Override

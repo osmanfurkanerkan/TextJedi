@@ -23,11 +23,11 @@ public class MainWindow extends JFrame{
         String currentTheme = EditorSettings.getInstance().getTheme();
         
         if(currentTheme.equals("Light Theme")){
-            uiFactory = new DarkUIFactory();
+            uiFactory = new LightUIFactory();
         }
         
         else if(currentTheme.equals("Dark Theme")){
-            uiFactory = new LightUIFactory();
+            uiFactory = new DarkUIFactory();
         }
         
         else{

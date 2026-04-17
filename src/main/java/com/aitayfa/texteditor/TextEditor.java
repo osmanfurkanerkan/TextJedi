@@ -4,10 +4,9 @@
 
 package com.aitayfa.texteditor;
 import com.aitayfa.texteditor.config.EditorSettings;
-import com.aitayfa.texteditor.ui.factory.DarkUIFactory;
-import com.aitayfa.texteditor.ui.factory.LightUIFactory;
+import com.aitayfa.texteditor.ui.MainWindow;
 import java.awt.*;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -16,11 +15,13 @@ import javax.swing.*;
 
 public class TextEditor {
     public static void main(String[] args) {
-        // Singleton 
         EditorSettings settings = EditorSettings.getInstance();
+        //settings.setTheme("Dark Theme");
         
-        DarkUIFactory factory = new DarkUIFactory();
-        JPanel panel = factory.createPanel();
-        panel.setVisible(true);
+        // Swing arayüzlerini güvenli bir şekilde (Thread-Safe) başlatmak için kullanılması zorunludur.
+        SwingUtilities.invokeLater(() -> {
+            MainWindow window = new MainWindow();
+            window.setVisible(true);
+        });
     }
 }
