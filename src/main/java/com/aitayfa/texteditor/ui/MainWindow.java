@@ -5,7 +5,7 @@
 package com.aitayfa.texteditor.ui;
 import com.aitayfa.texteditor.config.EditorSettings;
 import com.aitayfa.texteditor.ui.factory.*;
-
+import com.aitayfa.texteditor.command.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,6 +18,7 @@ public class MainWindow extends JFrame{
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private UIFactory uiFactory;
+    private JTextArea textArea;
     
     public MainWindow(){
         EditorSettings settings = EditorSettings.getInstance();
@@ -45,8 +46,8 @@ public class MainWindow extends JFrame{
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         
-        mainPanel.add(createStartScreen(), "START_SCREEN"); // başlangıç/hoş geldin ekranı
         mainPanel.add(createEditorScreen(), "EDITOR_SCREEN"); // editör ekranı
+        mainPanel.add(createStartScreen(), "START_SCREEN"); // başlangıç/hoş geldin ekranı
         
         add(mainPanel);
         cardLayout.show(mainPanel, "START_SCREEN"); // çalıştırınca ilk bunu göster
@@ -61,7 +62,17 @@ public class MainWindow extends JFrame{
         JButton btnOpenFile = uiFactory.createButton("Mevcut Dosyayı Aç");
 
         // Geçici Event Listener: Yeni Dosyaya tıklayınca Editör ekranına geçiş yap
-        btnNewFile.addActionListener(e -> cardLayout.show(mainPanel, "EDITOR_SCREEN"));
+        btnNewFile.addActionListener(e -> {
+            textArea.setText("");
+            cardLayout.show(mainPanel, "EDITOR_SCREEN");
+        });
+        
+        Command openCommand = new OpenFileCommand(this, textArea, () -> {
+            cardLayout.show(mainPanel, "EDITOR_SCREEN"); // İşlem başarılıysa editöre geç
+        });
+        
+        // Butona tıklanınca komutu çalıştır
+        btnOpenFile.addActionListener(e -> openCommand.execute());
 
         // Butonları alt alta dizmek için küçük bir alt panel
         JPanel buttonBox = uiFactory.createPanel();
@@ -88,7 +99,7 @@ public class MainWindow extends JFrame{
         panel.add(btnBack, BorderLayout.NORTH);
 
         // editörün input kısmını oluşturacak metin kutusu
-        JTextArea textArea = uiFactory.createTextArea();
+        textArea = uiFactory.createTextArea();
         
         // Yazıların taşmaması ve scroll (kaydırma) çubuğu çıkması için JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
