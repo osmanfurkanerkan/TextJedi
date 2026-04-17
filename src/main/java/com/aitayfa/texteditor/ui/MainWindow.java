@@ -8,6 +8,8 @@ import com.aitayfa.texteditor.ui.factory.*;
 import com.aitayfa.texteditor.command.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -116,6 +118,22 @@ public class MainWindow extends JFrame{
         panel.add(menuBar, BorderLayout.NORTH);
                 
         panel.add(scrollPane, BorderLayout.CENTER);
+        
+        // auto save (30 saniyede bir)
+        javax.swing.Timer autoSaveTimer = new javax.swing.Timer(30000, e -> {
+            String backupPath = EditorSettings.getInstance().getAutoSavePath();
+            
+            // Sadece metin kutusu boş değilse yedekle
+            if (!textArea.getText().trim().isEmpty()) {
+                try (FileWriter writer = new FileWriter(backupPath)) {
+                    writer.write(textArea.getText());
+                    System.out.println("Arka planda otomatik kayıt alındı: " + backupPath);
+                } catch (IOException ex) {
+                    System.err.println("Otomatik kayıt başarısız: " + ex.getMessage());
+                }
+            }
+        });
+        autoSaveTimer.start();
 
         return panel;
     }

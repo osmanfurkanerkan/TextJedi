@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.aitayfa.texteditor.config;
+import java.io.File;
+
 /**
  *
  * @author berkaysarmasoglu
@@ -20,6 +22,7 @@ public class EditorSettings {
     private int windowWidth;
     private int windowHeight;
     private int padding;
+    private String autoSavePath;
     
     // Constructor'ı private yapıyoruz ki dışarıdan 'new' anahtar kelimesiyle başka bir kopya üretilemesin.
     private EditorSettings() {
@@ -30,6 +33,7 @@ public class EditorSettings {
         this.windowWidth = 1000;
         this.windowHeight = 700;
         this.padding = 20;
+        this.autoSavePath = System.getProperty("user.home") + File.separator + "texteditor_autosave.txt";
     }
     
     // Sistemin her yerinden ayarlara ulaşmak için kullanılacak tek giriş noktası
@@ -64,5 +68,8 @@ public class EditorSettings {
 
     public int getPadding() { return padding; }
     public void setPadding(int padding) { this.padding = padding; }
+    
+    public String getAutoSavePath() { return autoSavePath; }
+    public void setAutoSavePath(String autoSavePath) { this.autoSavePath = autoSavePath; }
     
 }
