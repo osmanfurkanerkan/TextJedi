@@ -108,7 +108,7 @@ public class LightUIFactory implements UIFactory{
     @Override
     public JMenuItem createMenuItem(String text) {
         JMenuItem item = new JMenuItem(text);
-        item.setBackground(new Color(230, 230, 230)); // Hafif daha koyu beyazs
+        item.setBackground(new Color(230, 230, 230)); // Hafif daha koyu beyaz
         item.setForeground(Color.BLACK);
         item.setOpaque(true);
         
@@ -121,6 +121,44 @@ public class LightUIFactory implements UIFactory{
     public Border createBorder() {
         // açık gri kenarlık
         return BorderFactory.createLineBorder(new Color(200, 200, 200), 1);
+    }
+    
+    @Override
+    public JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.BLACK);
+        return label;
+    }
+
+    @Override
+    public JCheckBox createCheckBox(String text, boolean selected) {
+        JCheckBox cb = new JCheckBox(text, selected);
+        cb.setForeground(Color.BLACK);
+        cb.setBackground(new Color(240, 240, 240));
+        return cb;
+    }
+
+    @Override
+    public JSpinner createSpinner(int value, int min, int max, int step) {
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(value, min, max, step));
+        // Spinner'ın içindeki yazı tipini ve rengini de dark mode yapalım
+        JComponent editor = spinner.getEditor();
+        if (editor instanceof JSpinner.DefaultEditor) {
+            JTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
+            textField.setBackground(new Color(230, 230, 230));
+            textField.setForeground(Color.BLACK);
+        }
+        return spinner;
+    }
+    
+    @Override
+    public JTextField createTextField(String text) {
+        JTextField textField = new JTextField(text);
+        textField.setBackground(Color.WHITE);
+        textField.setForeground(Color.BLACK);
+        textField.setCaretColor(Color.BLACK);
+        textField.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        return textField;
     }
     
 }

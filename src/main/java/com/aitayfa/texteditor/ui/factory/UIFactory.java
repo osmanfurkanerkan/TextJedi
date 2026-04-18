@@ -20,4 +20,8 @@ public interface UIFactory {
     JMenu createMenu(String text);
     JMenuItem createMenuItem(String text);
     Border createBorder(); // Kenarlık rengi için
+    JLabel createLabel(String text);
+    JCheckBox createCheckBox(String text, boolean selected);
+    JSpinner createSpinner(int value, int min, int max, int step);
+    JTextField createTextField(String text);
 }

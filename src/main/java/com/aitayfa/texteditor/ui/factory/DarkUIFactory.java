@@ -124,4 +124,42 @@ public class DarkUIFactory implements UIFactory {
         // beyaz kenarlık yerine koyu gri kenarlık
         return BorderFactory.createLineBorder(new Color(60, 60, 60), 1); 
     }
+    
+    @Override
+    public JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        return label;
+    }
+
+    @Override
+    public JCheckBox createCheckBox(String text, boolean selected) {
+        JCheckBox cb = new JCheckBox(text, selected);
+        cb.setForeground(Color.WHITE);
+        cb.setBackground(new Color(40, 40, 40));
+        return cb;
+    }
+
+    @Override
+    public JSpinner createSpinner(int value, int min, int max, int step) {
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(value, min, max, step));
+        // Spinner'ın içindeki yazı tipini ve rengini de dark mode yapalım
+        JComponent editor = spinner.getEditor();
+        if (editor instanceof JSpinner.DefaultEditor) {
+            JTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
+            textField.setBackground(new Color(60, 60, 60));
+            textField.setForeground(Color.WHITE);
+        }
+        return spinner;
+    }
+    
+    @Override
+    public JTextField createTextField(String text) {
+        JTextField textField = new JTextField(text);
+        textField.setBackground(new Color(60, 60, 60));
+        textField.setForeground(Color.WHITE);
+        textField.setCaretColor(Color.WHITE);
+        textField.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 80)));
+        return textField;
+    }
 }

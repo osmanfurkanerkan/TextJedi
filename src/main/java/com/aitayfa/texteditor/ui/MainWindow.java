@@ -235,17 +235,22 @@ public class MainWindow extends JFrame{
         menuView.add(itemHighlighterColor);
         
         // SETTINGS menü
-        JMenuItem itemSettings = uiFactory.createMenuItem("Ayarlar...");
-        itemSettings.addActionListener(e -> {
-            lastScreen = "EDITOR_SCREEN";
-            cardLayout.show(mainPanel, "SETTINGS_SCREEN");
+        JMenu menuSettings = uiFactory.createMenu("Ayarlar...");
+        
+        // JMenu'ler ActionListener yerine MouseListener ile tıklanmayı daha iyi algılar
+        menuSettings.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                lastScreen = "EDITOR_SCREEN";
+                cardLayout.show(mainPanel, "SETTINGS_SCREEN");
+            }
         });
         
         menuBar.add(menuFile);
         menuBar.add(menuEdit);
         menuBar.add(menuView);
         
-        menuBar.add(itemSettings);
+        menuBar.add(menuSettings);
         panel.add(menuBar, BorderLayout.NORTH);
                 
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -281,40 +286,44 @@ public class MainWindow extends JFrame{
         EditorSettings settings = EditorSettings.getInstance();
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
-        JLabel lblTitle = new JLabel("Uygulama Ayarları");
+        JLabel lblTitle = uiFactory.createLabel("Uygulama Ayarları");
         lblTitle.setFont(new Font("SansSerif", Font.BOLD, 20));
         panel.add(lblTitle, gbc);
 
         // Word Wrap
         gbc.gridy = 1; gbc.gridwidth = 1;
-        panel.add(new Label("Sözcük Kaydırma:"), gbc);
+        panel.add(uiFactory.createLabel("Sözcük Kaydırma:"), gbc);
         gbc.gridx = 1;
-        JCheckBox chkWrap = new JCheckBox("Aktif", settings.isWordWrapEnabled());
+        JCheckBox chkWrap = uiFactory.createCheckBox("Aktif", settings.isWordWrapEnabled());
         panel.add(chkWrap, gbc);
 
         // Padding
         gbc.gridx = 0; gbc.gridy = 2;
-        panel.add(new JLabel("Kenar Boşluğu (px):"), gbc);
+        panel.add(uiFactory.createLabel("Kenar Boşluğu (px):"), gbc);
         gbc.gridx = 1;
-        JSpinner spinPadding = new JSpinner(new SpinnerNumberModel(settings.getPadding(), 0, 50, 1));
+        JSpinner spinPadding = uiFactory.createSpinner(settings.getPadding(), 0, 50, 1);
         panel.add(spinPadding, gbc);
 
         // Auto Save Period
         gbc.gridx = 0; gbc.gridy = 3;
-        panel.add(new JLabel("Oto Kayıt Sıklığı (sn):"), gbc);
+        panel.add(uiFactory.createLabel("Oto Kayıt Sıklığı (sn):"), gbc);
         gbc.gridx = 1;
-        JSpinner spinAutoSave = new JSpinner(new SpinnerNumberModel(settings.getAutoSavePeriod(), 10, 600, 10));
+        JSpinner spinAutoSave = uiFactory.createSpinner(settings.getAutoSavePeriod(), 10, 600, 10);
         panel.add(spinAutoSave, gbc);
 
         // Auto Save Path
         gbc.gridx = 0; gbc.gridy = 4;
-        panel.add(new JLabel("Oto Kayıt Klasörü:"), gbc);
+        panel.add(uiFactory.createLabel("Oto Kayıt Klasörü:"), gbc);
+
         gbc.gridx = 1;
+        // İçine metin kutusu ve butonu yan yana koyacağımız alt panel
         JPanel pathPanel = uiFactory.createPanel(); 
         pathPanel.setLayout(new BorderLayout(5, 0));
+
+        // Yolu gösterecek metin kutusu
         String currentPath = settings.getAutoSavePath() != null ? settings.getAutoSavePath() : "";
-        JTextField txtAutoSavePath = new JTextField(currentPath);
-        txtAutoSavePath.setEditable(false);
+        JTextField txtAutoSavePath = uiFactory.createTextField(currentPath);
+        txtAutoSavePath.setEditable(false); // Elle yazıp bozmasın, sadece butonla seçsin
         pathPanel.add(txtAutoSavePath, BorderLayout.CENTER);
 
         // Klasör seçme butonu
@@ -333,23 +342,23 @@ public class MainWindow extends JFrame{
 
         panel.add(pathPanel, gbc);
 
-        // 5. Butonlar (gridy değerini 5 yaptık çünkü araya klasör seçimi girdi)
         gbc.gridx = 0; gbc.gridy = 5;
+        JButton btnBack = uiFactory.createButton("Geri Dön");
+        btnBack.addActionListener(e -> cardLayout.show(mainPanel, lastScreen));
+        panel.add(btnBack, gbc);
+        
+        gbc.gridx = 1;
         JButton btnSave = uiFactory.createButton("Uygula");
         btnSave.addActionListener(e -> {
             settings.setWordWrapEnabled(chkWrap.isSelected());
             settings.setPadding((int) spinPadding.getValue());
             settings.setAutoSavePeriod((int) spinAutoSave.getValue());
             settings.setAutoSavePath(txtAutoSavePath.getText());
-
             applyThemeDynamically(settings.getTheme()); 
         });
         panel.add(btnSave, gbc);
 
-        gbc.gridx = 1;
-        JButton btnBack = uiFactory.createButton("Geri Dön");
-        btnBack.addActionListener(e -> cardLayout.show(mainPanel, lastScreen));
-        panel.add(btnBack, gbc);
+        
         
         return panel;
     }
