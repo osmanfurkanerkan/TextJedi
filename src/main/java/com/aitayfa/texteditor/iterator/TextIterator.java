@@ -1,65 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.aitayfa.texteditor.iterator;
-import java.util.Iterator;
-/**
- *
- * @author berkaysarmasoglu
- */
 
-// ITERATOR PATTERN
-public class TextIterator implements Iterator<String>{
-    private String[] lines;
-    private int currentLineIndex = 0;
-    private String[] currentWords;
-    private int currentWordIndex = 0;
-    
-    // next() çağrıldığında kelimenin asıl bulunduğu satır
-    private int lastReturnedLineIndex = 0;
-    
+import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class TextIterator implements Iterator<String> {
+    private Matcher matcher;
+    private boolean hasNextMatch;
+    private int lastStartIndex = -1;
+    private int lastEndIndex = -1;
+
     public TextIterator(String text) {
-        // Metni önce satır satır bölüyoruz
-        lines = text.split("\n");
-        loadWordsForCurrentLine();
+        // Sadece harf ve rakamlardan oluşan kelimeleri bulur (Türkçe karakterler dahil)
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9çğıöşüÇĞİÖŞÜ]+");
+        matcher = pattern.matcher(text);
+        
+        // İlk eşleşmeyi bul ve hazırda beklet
+        hasNextMatch = matcher.find();
     }
-    
-    // O anki satırı kelimelere parçalayıp hazırlayan yardımcı metot
-    private void loadWordsForCurrentLine() {
-        while (currentLineIndex < lines.length) {
-            String line = lines[currentLineIndex].trim();
-            if (!line.isEmpty()) {
-                currentWords = line.split("\\s+");
-                currentWordIndex = 0;
-                return; // Dolu bir satır bulduk, aramaya hazır
-            }
-            // Satır boşsa bir sonrakine geç
-            currentLineIndex++; 
-        }
-        currentWords = null; // Okunacak satır kalmadı
-    }
-    
+
     @Override
     public boolean hasNext() {
-        return currentWords != null && currentWordIndex < currentWords.length;
+        return hasNextMatch;
     }
 
     @Override
     public String next() {
-        String word = currentWords[currentWordIndex++];
-        lastReturnedLineIndex = currentLineIndex; // Kelimenin bulunduğu satırı hafızaya al
+        String word = matcher.group();
+        lastStartIndex = matcher.start(); // Kelimenin başladığı tam karakter indeksi
+        lastEndIndex = matcher.end();     // Kelimenin bittiği tam karakter indeksi
         
-        // O satırdaki kelimeler bittiyse, bir sonraki satıra geçmek için sistemi kur
-        if (currentWordIndex >= currentWords.length) {
-            currentLineIndex++;
-            loadWordsForCurrentLine();
-        }
-        
+        hasNextMatch = matcher.find(); // Bir sonraki kelimeyi kontrol et
         return word;
     }
-    
-    public int getCurrentLineNumber() {
-        return lastReturnedLineIndex + 1;
-    }
+
+    // Vurgulayıcı (Highlighter) için gerekli olan tam koordinatlar
+    public int getStartIndex() { return lastStartIndex; }
+    public int getEndIndex() { return lastEndIndex; }
 }

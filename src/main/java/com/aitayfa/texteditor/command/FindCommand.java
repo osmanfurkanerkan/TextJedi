@@ -1,14 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.aitayfa.texteditor.command;
+
 import com.aitayfa.texteditor.iterator.TextIterator;
+import com.aitayfa.texteditor.config.EditorSettings;
 import javax.swing.*;
-/**
- *
- * @author berkaysarmasoglu
- */
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import java.awt.Color;
+
 public class FindCommand implements Command {
     private JTextArea textArea;
     private JFrame parent;
@@ -17,34 +15,47 @@ public class FindCommand implements Command {
         this.parent = parent;
         this.textArea = textArea;
     }
-    
+
     @Override
     public void execute() {
         String searchTerm = JOptionPane.showInputDialog(parent, "Aranacak kelimeyi girin:");
+        
+        // 1. Önceki aramalardan kalan eski vurguları temizle
+        Highlighter highlighter = textArea.getHighlighter();
+        highlighter.removeAllHighlights();
         if (searchTerm == null || searchTerm.isEmpty()) return;
 
+        
+        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(EditorSettings.getInstance().getHighlighterColor());
+
         TextIterator iterator = new TextIterator(textArea.getText());
-        StringBuilder resultMessage = new StringBuilder(); // Sonuçları biriktireceğimiz metin
         int count = 0;
 
-        while (iterator.hasNext()) {
-            String currentWord = iterator.next();
-            // Kelimelerin yanındaki noktalama işaretlerinden kurtulup saf kelimeyi karşılaştırıyoruz
-            String cleanWord = currentWord.replaceAll("[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]", "");
-            
-            if (cleanWord.equalsIgnoreCase(searchTerm)) {
-                count++;
-                resultMessage.append("Satır ").append(iterator.getCurrentLineNumber()).append("\n");
+        try {
+            while (iterator.hasNext()) {
+                String currentWord = iterator.next();
+                
+                // Kelime eşleşiyorsa, Iterator'dan indeksleri al ve o aralığı boya
+                if (currentWord.equalsIgnoreCase(searchTerm)) {
+                    highlighter.addHighlight(iterator.getStartIndex(), iterator.getEndIndex(), painter);
+                    count++;
+                }
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(parent, "Vurgulama hatası: " + ex.getMessage(), "Hata", JOptionPane.ERROR_MESSAGE);
         }
 
+        // 3. Kullanıcıya sonucu bildir
         if (count > 0) {
             JOptionPane.showMessageDialog(parent, 
-                "'" + searchTerm + "' kelimesi " + count + " kez bulundu:\n\n" + resultMessage.toString(), 
-                "Arama Sonucu", 
+                count + " adet eşleşme bulundu ve işaretlendi.", 
+                "Arama Tamamlandı", 
                 JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(parent, "Maalesef '" + searchTerm + "' metin içinde bulunamadı.", "Sonuç Yok", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(parent, 
+                "Maalesef '" + searchTerm + "' kelimesi bulunamadı.", 
+                "Sonuç Yok", 
+                JOptionPane.WARNING_MESSAGE);
         }
     }
 }

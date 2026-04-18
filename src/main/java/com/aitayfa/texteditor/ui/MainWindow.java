@@ -127,10 +127,13 @@ public class MainWindow extends JFrame{
         // EDIT MENU
         JMenu menuEdit = uiFactory.createMenu("Düzenle");
         JMenuItem itemFind = uiFactory.createMenuItem("Bul");
+        JMenuItem itemClearHighlights = uiFactory.createMenuItem("Arama Vurgularını Temizle");
 
         Command findCommand = new FindCommand(this, textArea);
         itemFind.addActionListener(e -> findCommand.execute());
+        itemClearHighlights.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
         menuEdit.add(itemFind);
+        menuEdit.add(itemClearHighlights);
         
         menuBar.add(menuFile);
         menuBar.add(menuEdit);

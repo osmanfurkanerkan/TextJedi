@@ -4,7 +4,7 @@
  */
 package com.aitayfa.texteditor.config;
 import java.io.File;
-
+import java.awt.Color;
 /**
  *
  * @author berkaysarmasoglu
@@ -25,6 +25,7 @@ public class EditorSettings {
     private String autoSavePath;
     private int autoSavePeriod;
     private String currentFilePath;
+    private Color highlighterColor;
     
     // Constructor'ı private yapıyoruz ki dışarıdan 'new' anahtar kelimesiyle başka bir kopya üretilemesin.
     private EditorSettings() {
@@ -38,6 +39,7 @@ public class EditorSettings {
         this.autoSavePath = System.getProperty("user.home") + File.separator + "texteditor_autosave.txt";
         this.autoSavePeriod = 30000;
         this.currentFilePath = null;
+        this.highlighterColor = new Color(150, 120, 30);
     }
     
     // Sistemin her yerinden ayarlara ulaşmak için kullanılacak tek giriş noktası
@@ -81,5 +83,8 @@ public class EditorSettings {
     
     public String getCurrentFilePath() { return currentFilePath; }
     public void setCurrentFilePath(String currentFilePath) { this.currentFilePath = currentFilePath; }
-    
+
+    public Color getHighlighterColor() { return highlighterColor; }
+    public void setHighlighterColor(Color highlighterColor) { this.highlighterColor = highlighterColor; }
+
 }
