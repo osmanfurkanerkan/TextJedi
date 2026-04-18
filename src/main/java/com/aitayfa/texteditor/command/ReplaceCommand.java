@@ -48,7 +48,7 @@ public class ReplaceCommand implements Command {
 
         // (?i) = Case Insensitive çalışmasını sağlar. 
         // Pattern.quote = Kullanıcı + veya * gibi özel karakterler girerse kodun patlamasını engeller.
-        String updatedText = currentText.replaceAll("(?i)" + Pattern.quote(targetWord), newWord);
+        String updatedText = currentText.replaceAll("(?i)\\b" + Pattern.quote(targetWord) + "\\b", newWord);
 
         // sil + yaz = 2 işlem yerine tek işlem undo manager ile
         textArea.getDocument().removeUndoableEditListener(undoManager);
