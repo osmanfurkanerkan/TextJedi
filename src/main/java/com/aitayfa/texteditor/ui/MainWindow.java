@@ -104,7 +104,10 @@ public class MainWindow extends JFrame{
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setBorder(uiFactory.createBorder());
         
+        // MENU BAR
         JMenuBar menuBar = uiFactory.createMenuBar();
+        
+        // FILE MENU
         JMenu menuFile = uiFactory.createMenu("Dosya");
         JMenuItem itemSave = uiFactory.createMenuItem("Kaydet");
         JMenuItem itemSaveAs = uiFactory.createMenuItem("Farklı Kaydet");
@@ -120,7 +123,17 @@ public class MainWindow extends JFrame{
         menuFile.add(itemSaveAs);
         menuFile.addSeparator();
         menuFile.add(itemBack);
+        
+        // EDIT MENU
+        JMenu menuEdit = uiFactory.createMenu("Düzenle");
+        JMenuItem itemFind = uiFactory.createMenuItem("Bul");
+
+        Command findCommand = new FindCommand(this, textArea);
+        itemFind.addActionListener(e -> findCommand.execute());
+        menuEdit.add(itemFind);
+        
         menuBar.add(menuFile);
+        menuBar.add(menuEdit);
         panel.add(menuBar, BorderLayout.NORTH);
                 
         panel.add(scrollPane, BorderLayout.CENTER);
