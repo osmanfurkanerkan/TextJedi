@@ -38,11 +38,12 @@ public class NewFileCommand implements Command {
                 return; // İşlemi iptal et
             }
         }
+        //ekranı ve hafızayı sıfırla
+        textArea.setText("");
         
         // Dosya durumunu sıfırla
         settings.setCurrentFilePath(null);
         settings.setModified(false);
-        textArea.setText("");
         parent.updateTitle();
     }
 }
