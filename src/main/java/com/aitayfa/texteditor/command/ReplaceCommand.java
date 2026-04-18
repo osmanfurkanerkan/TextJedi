@@ -5,6 +5,10 @@
 package com.aitayfa.texteditor.command;
 import javax.swing.*;
 import java.util.regex.Pattern;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
 /**
  *
@@ -13,10 +17,12 @@ import java.util.regex.Pattern;
 public class ReplaceCommand implements Command {
     private JFrame parent;
     private JTextArea textArea;
+    private UndoManager undoManager;
 
-    public ReplaceCommand(JFrame parent, JTextArea textArea) {
+    public ReplaceCommand(JFrame parent, JTextArea textArea, UndoManager undoManager) {
         this.parent = parent;
         this.textArea = textArea;
+        this.undoManager = undoManager;
     }
 
     @Override
@@ -44,7 +50,29 @@ public class ReplaceCommand implements Command {
         // Pattern.quote = Kullanıcı + veya * gibi özel karakterler girerse kodun patlamasını engeller.
         String updatedText = currentText.replaceAll("(?i)" + Pattern.quote(targetWord), newWord);
 
-        textArea.setText(updatedText);
+        // sil + yaz = 2 işlem yerine tek işlem undo manager ile
+        textArea.getDocument().removeUndoableEditListener(undoManager);
+        textArea.setText(updatedText);  
+        textArea.getDocument().addUndoableEditListener(undoManager);
+        undoManager.addEdit(new AbstractUndoableEdit() {
+            @Override
+            public void undo() throws CannotUndoException {
+                super.undo();
+                // Geri ala basıldığında sessizce eski metne dön
+                textArea.getDocument().removeUndoableEditListener(undoManager);
+                textArea.setText(currentText); 
+                textArea.getDocument().addUndoableEditListener(undoManager);
+            }
+
+            @Override
+            public void redo() throws CannotRedoException {
+                super.redo();
+                // İleri ala (Redo) basıldığında sessizce yeni metne dön
+                textArea.getDocument().removeUndoableEditListener(undoManager);
+                textArea.setText(updatedText); 
+                textArea.getDocument().addUndoableEditListener(undoManager);
+            }
+        });
         
         JOptionPane.showMessageDialog(parent, 
             "Değiştirme işlemi başarıyla tamamlandı.", 

@@ -136,7 +136,7 @@ public class MainWindow extends JFrame{
 
         Command undoCommand = new UndoCommand(undoManager);
         Command findCommand = new FindCommand(this, textArea);
-        Command replaceCommand = new ReplaceCommand(this, textArea);
+        Command replaceCommand = new ReplaceCommand(this, textArea, undoManager);
         itemUndo.addActionListener(e -> undoCommand.execute());
         itemFind.addActionListener(e -> findCommand.execute());
         itemReplace.addActionListener(e -> replaceCommand.execute());
