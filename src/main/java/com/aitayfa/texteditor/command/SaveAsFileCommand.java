@@ -4,6 +4,7 @@
  */
 package com.aitayfa.texteditor.command;
 import com.aitayfa.texteditor.config.EditorSettings;
+import com.aitayfa.texteditor.ui.MainWindow;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
@@ -38,7 +39,10 @@ public class SaveAsFileCommand implements Command {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(targetTextArea.getText());
             // Başarılı kayıttan sonra dosya yolunu Singleton'a kaydet!
-            EditorSettings.getInstance().setCurrentFilePath(file.getAbsolutePath());
+            EditorSettings settings = EditorSettings.getInstance();
+            settings.setCurrentFilePath(file.getAbsolutePath());
+            settings.setModified(false);
+            ((MainWindow)parentWindow).updateTitle(); // başlığı temizle
             JOptionPane.showMessageDialog(parentWindow, "Dosya kaydedildi!", "Başarılı", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(parentWindow, "Hata: " + ex.getMessage(), "Hata", JOptionPane.ERROR_MESSAGE);

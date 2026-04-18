@@ -4,6 +4,7 @@
  */
 package com.aitayfa.texteditor.command;
 import com.aitayfa.texteditor.config.EditorSettings;
+import com.aitayfa.texteditor.ui.MainWindow;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
@@ -31,7 +32,16 @@ public class SaveFileCommand implements Command {
             new SaveAsFileCommand(parentWindow, targetTextArea).execute();
         } else {
             // Var olan dosya: Sessizce üzerine yaz
-            new SaveAsFileCommand(parentWindow, targetTextArea).saveToFile(new File(currentPath));
+            try (java.io.FileWriter writer = new java.io.FileWriter(currentPath)) {
+                writer.write(targetTextArea.getText());
+
+                EditorSettings.getInstance().setModified(false);
+                ((MainWindow)parentWindow).updateTitle();
+
+                // Mesaj kutusu silindi, sessizce kaydediyor.
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(parentWindow, "Hata: " + ex.getMessage());
+            }
         }
     }
 }

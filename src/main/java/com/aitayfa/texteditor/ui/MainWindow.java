@@ -106,6 +106,20 @@ public class MainWindow extends JFrame{
         textArea = uiFactory.createTextArea();
         UndoManager undoManager = new UndoManager();
         textArea.getDocument().addUndoableEditListener(undoManager);
+        textArea.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void trigger() {
+                if (!EditorSettings.getInstance().isModified()) {
+                    EditorSettings.getInstance().setModified(true);
+                    updateTitle(); // Sadece ilk değişiklikte başlığı güncelle
+                }
+            }
+            @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { trigger(); }
+            @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { trigger(); }
+            @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { trigger(); }
+        });
+
+        // Başlangıçta başlığı ayarla
+        updateTitle();
         
         // Yazıların taşmaması ve scroll (kaydırma) çubuğu çıkması için JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -185,6 +199,17 @@ public class MainWindow extends JFrame{
         autoSaveTimer.start();
 
         return panel;
+    }
+    
+    public void updateTitle() {
+        EditorSettings settings = EditorSettings.getInstance();
+        String title = "TextEditor - " + settings.getCurrentFileName();
+
+        if (settings.isModified()) {
+            title += " *"; // Değişiklik varsa yıldız ekle
+        }
+
+        setTitle(title);
     }
     
 }

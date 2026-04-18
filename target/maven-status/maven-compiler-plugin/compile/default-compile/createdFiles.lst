@@ -14,6 +14,7 @@ com/aitayfa/texteditor/TextEditor.class
 com/aitayfa/texteditor/ui/factory/LightUIFactory.class
 com/aitayfa/texteditor/iterator/TextIterator.class
 com/aitayfa/texteditor/command/SaveAsFileCommand.class
+com/aitayfa/texteditor/ui/MainWindow$1.class
 com/aitayfa/texteditor/ui/factory/DarkUIFactory.class
 com/aitayfa/texteditor/ui/factory/DarkUIFactory$2.class
 com/aitayfa/texteditor/command/ReplaceCommand.class

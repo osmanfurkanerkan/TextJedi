@@ -26,6 +26,7 @@ public class EditorSettings {
     private int autoSavePeriod;
     private String currentFilePath;
     private Color highlighterColor;
+    private boolean modified;
     
     // Constructor'ı private yapıyoruz ki dışarıdan 'new' anahtar kelimesiyle başka bir kopya üretilemesin.
     private EditorSettings() {
@@ -40,6 +41,7 @@ public class EditorSettings {
         this.autoSavePeriod = 30000;
         this.currentFilePath = null;
         this.highlighterColor = new Color(150, 120, 30);
+        this.modified = false;
     }
     
     // Sistemin her yerinden ayarlara ulaşmak için kullanılacak tek giriş noktası
@@ -86,5 +88,13 @@ public class EditorSettings {
 
     public Color getHighlighterColor() { return highlighterColor; }
     public void setHighlighterColor(Color highlighterColor) { this.highlighterColor = highlighterColor; }
+    
+    public boolean isModified() { return modified; }
+    public void setModified(boolean modified) { this.modified = modified; }
+    
+    public String getCurrentFileName() {
+        if (currentFilePath == null) return "Yeni Belge";
+        return new java.io.File(currentFilePath).getName();
+    }
 
 }

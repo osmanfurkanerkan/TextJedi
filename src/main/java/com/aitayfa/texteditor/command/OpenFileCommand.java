@@ -4,6 +4,7 @@
  */
 package com.aitayfa.texteditor.command;
 import com.aitayfa.texteditor.config.EditorSettings;
+import com.aitayfa.texteditor.ui.MainWindow;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,7 +43,10 @@ public class OpenFileCommand implements Command {
                 
                 // İşlem başarılıysa ekranı (Start -> Editor) değiştir
                 if (onSuccess != null) {
-                    EditorSettings.getInstance().setCurrentFilePath(selectedFile.getAbsolutePath());
+                    EditorSettings settings = EditorSettings.getInstance();
+                    settings.setCurrentFilePath(selectedFile.getAbsolutePath());
+                    settings.setModified(false); // Yeni açılan dosya temizdir
+                    ((MainWindow)parentWindow).updateTitle();
                     onSuccess.run();
                 }
                 
