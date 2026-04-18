@@ -16,43 +16,68 @@ import java.io.IOException;
  * @author berkaysarmasoglu
  */
 public class OpenFileCommand implements Command {
-    private JFrame parentWindow;
-    private JTextArea targetTextArea;
-    private Runnable onSuccess; // Başarılı olursa ekranı değiştirmek için bir tetikleyici
-    
-    // Komut çalışmak için neye ihtiyaç duyuyorsa (pencere, metin kutusu) Constructor'dan alıyoruz.
-    public OpenFileCommand(JFrame parentWindow, JTextArea targetTextArea, Runnable onSuccess) {
-        this.parentWindow = parentWindow;
-        this.targetTextArea = targetTextArea;
+    private MainWindow parent;
+    private JTextArea textArea;
+    private Runnable onSuccess;
+
+    public OpenFileCommand(MainWindow parent, JTextArea textArea, Runnable onSuccess) {
+        this.parent = parent;
+        this.textArea = textArea;
         this.onSuccess = onSuccess;
     }
-    
+
     @Override
     public void execute() {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(parentWindow);
+        EditorSettings settings = EditorSettings.getInstance();
 
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
-                targetTextArea.setText(""); // Önceki metni temizle
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    targetTextArea.append(line + "\n"); // Dosyadaki metni ekrana yaz
-                }
+        // 1. KAYDEDİLMEMİŞ DEĞİŞİKLİK KONTROLÜ
+        if (settings.isModified()) {
+            int option = JOptionPane.showConfirmDialog(parent, 
+                "Mevcut dosyada kaydedilmemiş değişiklikler var. Yeni bir dosya açmadan önce kaydetmek ister misiniz?", 
+                "Dosya Aç", 
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+            
+            if (option == JOptionPane.YES_OPTION) {
+                // Kaydetmeyi seçtiyse önce kaydet komutunu çalıştır
+                new SaveFileCommand(parent, textArea).execute();
+            } else if (option == JOptionPane.CANCEL_OPTION || option == JOptionPane.CLOSED_OPTION) {
+                // İptale bastıysa veya pencereyi kapattıysa açma işlemini durdur
+                return; 
+            }
+            // NO_OPTION (Hayır) seçilirse hiçbir şey yapmadan aşağıdaki kodlardan (dosya açma) devam eder.
+        }
+
+        // 2. DOSYA SEÇİCİ (Dosya açma işlemi başlıyor)
+        JFileChooser chooser = new JFileChooser();
+        
+        int chooserOption = chooser.showOpenDialog(parent);
+        if (chooserOption == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+            
+            try {
+                String content = new String(java.nio.file.Files.readAllBytes(selectedFile.toPath()));
+                textArea.setText(content);
                 
-                // İşlem başarılıysa ekranı (Start -> Editor) değiştir
+                // Singleton ayarlarını yeni açılan dosyaya göre güncelle
+                settings.setCurrentFilePath(selectedFile.getAbsolutePath());
+                
+                // setText() komutu dinleyiciyi anlık tetikleyip * koyduracağı için, 
+                // işlemi hemen ardından zorla false yapıp başlığı temizliyoruz.
+                settings.setModified(false); 
+                parent.updateTitle();
+                
+                // Başarı durumunda geri arama (callback) fonksiyonunu çalıştır
                 if (onSuccess != null) {
-                    EditorSettings settings = EditorSettings.getInstance();
-                    settings.setCurrentFilePath(selectedFile.getAbsolutePath());
-                    settings.setModified(false); // Yeni açılan dosya temizdir
-                    ((MainWindow)parentWindow).updateTitle();
                     onSuccess.run();
                 }
-                
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(parentWindow, "Dosya okunamadı: " + ex.getMessage(), "Hata", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(parent, 
+                    "Dosya okunamadı: " + ex.getMessage(), 
+                    "Hata", 
+                    JOptionPane.ERROR_MESSAGE);
             }
+            
         }
     }
 }

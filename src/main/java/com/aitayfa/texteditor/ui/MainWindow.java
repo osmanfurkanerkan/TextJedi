@@ -148,20 +148,37 @@ public class MainWindow extends JFrame{
         
         // FILE MENU
         JMenu menuFile = uiFactory.createMenu("Dosya");
+        JMenuItem itemNew = uiFactory.createMenuItem("Yeni");
+        JMenuItem itemOpen = uiFactory.createMenuItem("Aç...");
         JMenuItem itemSave = uiFactory.createMenuItem("Kaydet");
         JMenuItem itemSaveAs = uiFactory.createMenuItem("Farklı Kaydet");
         JMenuItem itemBack = uiFactory.createMenuItem("Giriş Ekranına Dön");
         
+        Command newCommand = new NewFileCommand(this, textArea);
+        Command openCommand = new OpenFileCommand(this, textArea, null); // Callback gerekmiyor
         Command saveCommand = new SaveFileCommand(this, textArea);
         Command saveAsCommand = new SaveAsFileCommand(this, textArea);
+        Command backCommand = new BackToStartCommand(this, textArea, () -> {
+            cardLayout.show(mainPanel, "START_SCREEN");
+        });
+        
+        // COMMAND + N , CTRL + N
+        itemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        itemNew.addActionListener(e -> newCommand.execute());
+        // COMMAND + O , CTRL + O
+        itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        itemOpen.addActionListener(e -> openCommand.execute());
         // COMMAND + S , CTRL + S
         itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemSave.addActionListener(e -> saveCommand.execute());
         // COMMAND + SHIFT + S , CTRL + SHIFT + S
         itemSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
         itemSaveAs.addActionListener(e -> saveAsCommand.execute());
-        itemBack.addActionListener(e -> cardLayout.show(mainPanel, "START_SCREEN"));
+        itemBack.addActionListener(e -> backCommand.execute());
         
+        menuFile.add(itemNew);
+        menuFile.add(itemOpen);
+        menuFile.addSeparator();
         menuFile.add(itemSave);
         menuFile.add(itemSaveAs);
         menuFile.addSeparator();
@@ -179,6 +196,7 @@ public class MainWindow extends JFrame{
         Command findCommand = new FindCommand(this, textArea);
         Command replaceCommand = new ReplaceCommand(this, textArea, undoManager);
         Command aiCommand = new AICommand(this, textArea, undoManager);
+        
         // COMMAND + Z , CTRL + Z
         itemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemUndo.addActionListener(e -> undoCommand.execute());
