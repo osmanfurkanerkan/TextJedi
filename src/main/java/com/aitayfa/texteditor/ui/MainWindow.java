@@ -173,10 +173,12 @@ public class MainWindow extends JFrame{
         JMenuItem itemFind = uiFactory.createMenuItem("Bul");
         JMenuItem itemReplace = uiFactory.createMenuItem("Değiştir");
         JMenuItem itemClearHighlights = uiFactory.createMenuItem("Arama Vurgularını Temizle");
+        JMenuItem itemAI = uiFactory.createMenuItem("AI Yardımı");
 
         Command undoCommand = new UndoCommand(undoManager);
         Command findCommand = new FindCommand(this, textArea);
         Command replaceCommand = new ReplaceCommand(this, textArea, undoManager);
+        Command aiCommand = new AICommand(this, textArea, undoManager);
         // COMMAND + Z , CTRL + Z
         itemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemUndo.addActionListener(e -> undoCommand.execute());
@@ -189,10 +191,13 @@ public class MainWindow extends JFrame{
         // COMMAND + E, CTRL + E
         itemClearHighlights.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemClearHighlights.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
+        itemAI.addActionListener(e -> aiCommand.execute());
         menuEdit.add(itemUndo);
         menuEdit.add(itemFind);
         menuEdit.add(itemReplace);
         menuEdit.add(itemClearHighlights);
+        menuEdit.addSeparator();
+        menuEdit.add(itemAI);
         
         // VIEW MENU
         JMenu menuView = uiFactory.createMenu("Görüntüle");
