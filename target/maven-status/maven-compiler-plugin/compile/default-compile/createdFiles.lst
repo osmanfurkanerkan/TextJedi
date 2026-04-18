@@ -1,3 +1,4 @@
+com/aitayfa/texteditor/command/UndoCommand.class
 com/aitayfa/texteditor/command/OpenFileCommand.class
 com/aitayfa/texteditor/ui/factory/UIFactory.class
 com/aitayfa/texteditor/ui/factory/DarkUIFactory$1.class

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.swing.undo.UndoManager;
 
 /**
  *
@@ -99,6 +100,8 @@ public class MainWindow extends JFrame{
         
         // editörün input kısmını oluşturacak metin kutusu
         textArea = uiFactory.createTextArea();
+        UndoManager undoManager = new UndoManager();
+        textArea.getDocument().addUndoableEditListener(undoManager);
         
         // Yazıların taşmaması ve scroll (kaydırma) çubuğu çıkması için JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -126,15 +129,19 @@ public class MainWindow extends JFrame{
         
         // EDIT MENU
         JMenu menuEdit = uiFactory.createMenu("Düzenle");
+        JMenuItem itemUndo = uiFactory.createMenuItem("Geri Al");
         JMenuItem itemFind = uiFactory.createMenuItem("Bul");
         JMenuItem itemReplace = uiFactory.createMenuItem("Değiştir");
         JMenuItem itemClearHighlights = uiFactory.createMenuItem("Arama Vurgularını Temizle");
 
+        Command undoCommand = new UndoCommand(undoManager);
         Command findCommand = new FindCommand(this, textArea);
         Command replaceCommand = new ReplaceCommand(this, textArea);
+        itemUndo.addActionListener(e -> undoCommand.execute());
         itemFind.addActionListener(e -> findCommand.execute());
         itemReplace.addActionListener(e -> replaceCommand.execute());
         itemClearHighlights.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
+        menuEdit.add(itemUndo);
         menuEdit.add(itemFind);
         menuEdit.add(itemReplace);
         menuEdit.add(itemClearHighlights);
