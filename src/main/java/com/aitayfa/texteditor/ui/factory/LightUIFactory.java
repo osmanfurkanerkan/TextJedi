@@ -20,6 +20,8 @@ public class LightUIFactory implements UIFactory{
         button.setBackground(new Color(230,230,230)); // açık gri
         button.setForeground(Color.BLACK); // siyah yazı
         button.setFocusPainted(false);
+        button.setOpaque(true); // OS çizimlerini engellemek için
+        button.setBorderPainted(false);
         return button;
     }
     
