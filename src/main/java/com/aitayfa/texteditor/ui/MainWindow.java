@@ -11,6 +11,10 @@ import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.undo.UndoManager;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
 
 /**
  *
@@ -118,7 +122,11 @@ public class MainWindow extends JFrame{
         
         Command saveCommand = new SaveFileCommand(this, textArea);
         Command saveAsCommand = new SaveAsFileCommand(this, textArea);
+        // COMMAND + S , CTRL + S
+        itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemSave.addActionListener(e -> saveCommand.execute());
+        // COMMAND + SHIFT + S , CTRL + SHIFT + S
+        itemSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK));
         itemSaveAs.addActionListener(e -> saveAsCommand.execute());
         itemBack.addActionListener(e -> cardLayout.show(mainPanel, "START_SCREEN"));
         
@@ -137,9 +145,17 @@ public class MainWindow extends JFrame{
         Command undoCommand = new UndoCommand(undoManager);
         Command findCommand = new FindCommand(this, textArea);
         Command replaceCommand = new ReplaceCommand(this, textArea, undoManager);
+        // COMMAND + Z , CTRL + Z
+        itemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemUndo.addActionListener(e -> undoCommand.execute());
+        // COMMAND + F , CTRL + F
+        itemFind.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemFind.addActionListener(e -> findCommand.execute());
+        // COMMAND + H , CTRL + H
+        itemReplace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemReplace.addActionListener(e -> replaceCommand.execute());
+        // COMMAND + E, CTRL + E
+        itemClearHighlights.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemClearHighlights.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
         menuEdit.add(itemUndo);
         menuEdit.add(itemFind);
