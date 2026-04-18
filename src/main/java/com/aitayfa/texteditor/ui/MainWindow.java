@@ -16,6 +16,7 @@ import java.io.IOException;
  * @author berkaysarmasoglu
  */
 
+// FACTORY PATTERN
 public class MainWindow extends JFrame{
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -101,11 +102,12 @@ public class MainWindow extends JFrame{
         
         // Yazıların taşmaması ve scroll (kaydırma) çubuğu çıkması için JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBorder(uiFactory.createBorder());
         
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menuFile = new JMenu("Dosya");
-        JMenuItem itemSave = new JMenuItem("Kaydet");
-        JMenuItem itemBack = new JMenuItem("Giriş Ekranına Dön");
+        JMenuBar menuBar = uiFactory.createMenuBar();
+        JMenu menuFile = uiFactory.createMenu("Dosya");
+        JMenuItem itemSave = uiFactory.createMenuItem("Kaydet");
+        JMenuItem itemBack = uiFactory.createMenuItem("Giriş Ekranına Dön");;
         
         Command saveCommand = new SaveFileCommand(this, textArea);
         itemSave.addActionListener(e -> saveCommand.execute());

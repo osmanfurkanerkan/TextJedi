@@ -5,7 +5,7 @@
 package com.aitayfa.texteditor.ui.factory;
 import javax.swing.*;
 import java.awt.*;
-
+import javax.swing.border.Border;
 /**
  *
  * @author berkaysarmasoglu
@@ -38,6 +38,36 @@ public class LightUIFactory implements UIFactory{
         textArea.setCaretColor(Color.BLACK); // İmleç rengi
         textArea.setFont(new Font("Consolas", Font.PLAIN, 14));
         return textArea;
+    }
+    
+    @Override
+    public JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(240, 240, 240));
+        menuBar.setOpaque(true);
+        return menuBar;
+    }
+
+    @Override
+    public JMenu createMenu(String text) {
+        JMenu menu = new JMenu(text);
+        menu.setForeground(Color.BLACK);
+        return menu;
+    }
+
+    @Override
+    public JMenuItem createMenuItem(String text) {
+        JMenuItem item = new JMenuItem(text);
+        item.setBackground(Color.WHITE);
+        item.setForeground(Color.BLACK);
+        item.setOpaque(true);
+        return item;
+    }
+
+    @Override
+    public Border createBorder() {
+        // açık gri kenarlık
+        return BorderFactory.createLineBorder(new Color(200, 200, 200), 1);
     }
     
 }

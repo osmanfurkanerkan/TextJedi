@@ -3,9 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.aitayfa.texteditor.ui.factory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
  *
@@ -17,4 +16,8 @@ public interface UIFactory {
     JButton createButton(String text);
     JPanel createPanel();
     JTextArea createTextArea();
+    JMenuBar createMenuBar();
+    JMenu createMenu(String text);
+    JMenuItem createMenuItem(String text);
+    Border createBorder(); // Kenarlık rengi için
 }
