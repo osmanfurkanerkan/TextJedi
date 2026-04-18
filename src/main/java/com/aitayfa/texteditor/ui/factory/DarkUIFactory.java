@@ -50,7 +50,7 @@ public class DarkUIFactory implements UIFactory {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(new Color(40, 40, 40));
+                g.setColor(new Color(50, 50, 50));
                 g.fillRect(0, 0, getWidth(), getHeight());
             }
         };
@@ -88,7 +88,6 @@ public class DarkUIFactory implements UIFactory {
                 g2.drawString(getText(), x, y);
                 
                 g2.dispose();
-                // super.paintComponent(g); // Bu satırı artık çağırmıyoruz çünkü çizimi biz üstlendik
             }
         };
         

@@ -1,11 +1,13 @@
 com/aitayfa/texteditor/command/OpenFileCommand.class
 com/aitayfa/texteditor/ui/factory/UIFactory.class
-com/aitayfa/texteditor/TextEditor.class
 com/aitayfa/texteditor/ui/factory/DarkUIFactory$1.class
-com/aitayfa/texteditor/ui/factory/LightUIFactory.class
 com/aitayfa/texteditor/command/Command.class
-com/aitayfa/texteditor/ui/factory/DarkUIFactory.class
 com/aitayfa/texteditor/config/EditorSettings.class
 com/aitayfa/texteditor/ui/MainWindow.class
-com/aitayfa/texteditor/ui/factory/DarkUIFactory$2.class
+com/aitayfa/texteditor/ui/factory/LightUIFactory$1.class
 com/aitayfa/texteditor/command/SaveFileCommand.class
+com/aitayfa/texteditor/ui/factory/LightUIFactory$2.class
+com/aitayfa/texteditor/TextEditor.class
+com/aitayfa/texteditor/ui/factory/LightUIFactory.class
+com/aitayfa/texteditor/ui/factory/DarkUIFactory.class
+com/aitayfa/texteditor/ui/factory/DarkUIFactory$2.class
