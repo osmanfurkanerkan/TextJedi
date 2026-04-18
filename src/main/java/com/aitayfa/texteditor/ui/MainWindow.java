@@ -182,8 +182,49 @@ public class MainWindow extends JFrame{
         menuEdit.add(itemReplace);
         menuEdit.add(itemClearHighlights);
         
+        // VIEW MENU
+        JMenu menuView = uiFactory.createMenu("Görüntüle");
+        
+        JMenu menuTheme = uiFactory.createMenu("Tema");
+        JMenuItem itemLightTheme = uiFactory.createMenuItem("Aydınlık Tema");
+        itemLightTheme.addActionListener(e -> { applyThemeDynamically("Light Theme"); });
+        JMenuItem itemDarkTheme = uiFactory.createMenuItem("Karanlık Tema");
+        itemDarkTheme.addActionListener(e -> { applyThemeDynamically("Dark Theme"); });
+        menuTheme.add(itemLightTheme);
+        menuTheme.add(itemDarkTheme);
+        
+        JMenu menuFontSize = uiFactory.createMenu("Yazı Boyutu");
+        int[] sizes = {12, 14, 16, 18, 20, 24, 28, 36};
+        for (int size : sizes) {
+            JMenuItem sizeItem = uiFactory.createMenuItem(size + " pt");
+            sizeItem.addActionListener(e -> {
+                settings.setFontSize(size);
+                Font currentFont = textArea.getFont();
+                textArea.setFont(new Font(currentFont.getName(), currentFont.getStyle(), size));
+            });
+            menuFontSize.add(sizeItem);
+        }
+        
+        JMenuItem itemHighlighterColor = uiFactory.createMenuItem("Arama Vurgu Rengini Seç...");
+        itemHighlighterColor.addActionListener(e -> {
+            Color initialColor = settings.getHighlighterColor();
+            Color newColor = JColorChooser.showDialog(this, "Vurgu Rengini Seç", initialColor);
+            
+            if (newColor != null) { // Kullanıcı iptale basmadıysa
+                settings.setHighlighterColor(newColor);
+                textArea.getHighlighter().removeAllHighlights(); 
+            }
+        });
+        
+        menuView.add(menuTheme);
+        menuView.addSeparator();
+        menuView.add(menuFontSize);
+        menuView.addSeparator();
+        menuView.add(itemHighlighterColor);
+        
         menuBar.add(menuFile);
         menuBar.add(menuEdit);
+        menuBar.add(menuView);
         panel.add(menuBar, BorderLayout.NORTH);
                 
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -207,6 +248,7 @@ public class MainWindow extends JFrame{
         return panel;
     }
     
+    // başlığı güncelle
     public void updateTitle() {
         EditorSettings settings = EditorSettings.getInstance();
         String title = "TextEditor - " + settings.getCurrentFileName();
@@ -216,6 +258,42 @@ public class MainWindow extends JFrame{
         }
 
         setTitle(title);
+    }
+    
+    // temayı anında değiştir
+    private void applyThemeDynamically(String newTheme) {
+        EditorSettings settings = EditorSettings.getInstance();
+        settings.setTheme(newTheme);
+
+        if (newTheme.equals("Light Theme")) {
+            uiFactory = new LightUIFactory();
+        } else if(newTheme.equals("Dark Theme")) {
+            uiFactory = new DarkUIFactory();
+        }
+
+        // mevcut durumu yedekle
+        String currentText = textArea.getText();
+        boolean wasModified = settings.isModified();
+
+        mainPanel.removeAll();
+
+        // baştan inşa et
+        JPanel startScreen = createStartScreen();
+        JPanel editorPanel = createEditorScreen();
+
+        // yedekleri geri yükle
+        textArea.setText(currentText);
+        settings.setModified(wasModified);
+        updateTitle();
+
+        // ekranları yerleştir ve göster
+        mainPanel.add(startScreen, "START_SCREEN");
+        mainPanel.add(editorPanel, "EDITOR_SCREEN");
+        cardLayout.show(mainPanel, "EDITOR_SCREEN");
+
+        // İŞLETİM SİSTEMİNİ EKRANI ZORLA YENİLEMEYE İT (Görsel bug kalmasın)
+        this.revalidate();
+        this.repaint();
     }
     
 }
