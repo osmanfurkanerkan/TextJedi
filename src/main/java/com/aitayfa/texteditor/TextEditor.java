@@ -8,6 +8,7 @@ import com.aitayfa.texteditor.ui.MainWindow;
 import java.awt.*;
 import javax.swing.SwingUtilities;
 
+
 /**
  *
  * @author berkaysarmasoglu

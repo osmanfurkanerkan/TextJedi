@@ -7,7 +7,14 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>26</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>com.aitayfa.texteditor.TextEditor</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+          <groupId>com.google.genai</groupId>
+          <artifactId>google-genai</artifactId>
+          <version>1.0.0</version>
+        </dependency>
+      </dependencies>
 </project>
