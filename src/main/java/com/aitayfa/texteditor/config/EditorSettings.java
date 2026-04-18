@@ -37,8 +37,8 @@ public class EditorSettings {
         this.windowWidth = 1000;
         this.windowHeight = 700;
         this.padding = 20;
-        this.autoSavePath = System.getProperty("user.home") + File.separator + "texteditor_autosave.txt";
-        this.autoSavePeriod = 30000;
+        this.autoSavePath = System.getProperty("user.home");
+        this.autoSavePeriod = 30;
         this.currentFilePath = null;
         this.highlighterColor = new Color(150, 120, 30);
         this.modified = false;

@@ -15,6 +15,7 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
+import java.io.File;
 
 /**
  *
@@ -27,6 +28,7 @@ public class MainWindow extends JFrame{
     private JPanel mainPanel;
     private UIFactory uiFactory;
     private JTextArea textArea;
+    private String lastScreen = "START_SCREEN";
     
     public MainWindow(){
         EditorSettings settings = EditorSettings.getInstance();
@@ -56,18 +58,21 @@ public class MainWindow extends JFrame{
         
         mainPanel.add(createEditorScreen(), "EDITOR_SCREEN"); // editör ekranı
         mainPanel.add(createStartScreen(), "START_SCREEN"); // başlangıç/hoş geldin ekranı
+        mainPanel.add(createSettingsScreen(), "SETTINGS_SCREEN"); // ayarlar ekranı
         
         add(mainPanel);
         cardLayout.show(mainPanel, "START_SCREEN"); // çalıştırınca ilk bunu göster
     }
     
-    // giriş ekranı
+    // GİRİŞ EKRANI
+    //##########################################
     private JPanel createStartScreen(){
         JPanel panel = uiFactory.createPanel();
         panel.setLayout(new GridBagLayout()); // Butonları tam ortaya hizalamak için
 
         JButton btnNewFile = uiFactory.createButton("Yeni Dosya Oluştur");
         JButton btnOpenFile = uiFactory.createButton("Mevcut Dosyayı Aç");
+        JButton btnSettings = uiFactory.createButton("Ayarlar");
 
         // Geçici Event Listener: Yeni Dosyaya tıklayınca Editör ekranına geçiş yap
         btnNewFile.addActionListener(e -> {
@@ -87,18 +92,25 @@ public class MainWindow extends JFrame{
         
         // Butona tıklanınca komutu çalıştır
         btnOpenFile.addActionListener(e -> openCommand.execute());
+        
+        btnSettings.addActionListener(e -> {
+            lastScreen = "START_SCREEN";
+            cardLayout.show(mainPanel, "SETTINGS_SCREEN");
+        });
 
         // Butonları alt alta dizmek için küçük bir alt panel
         JPanel buttonBox = uiFactory.createPanel();
-        buttonBox.setLayout(new GridLayout(2, 1, 10, 10)); // 2 satır, 1 sütun, 10px boşluk
+        buttonBox.setLayout(new GridLayout(3, 1, 10, 10)); // 2 satır, 1 sütun, 10px boşluk
         buttonBox.add(btnNewFile);
         buttonBox.add(btnOpenFile);
+        buttonBox.add(btnSettings);
 
         panel.add(buttonBox);
         return panel;
     }
     
-    // editör ekranı
+    // EDITOR EKRANI
+    //##########################################
     private JPanel createEditorScreen() {
         EditorSettings settings = EditorSettings.getInstance();
         JPanel panel = uiFactory.createPanel();
@@ -222,22 +234,31 @@ public class MainWindow extends JFrame{
         menuView.addSeparator();
         menuView.add(itemHighlighterColor);
         
+        // SETTINGS menü
+        JMenuItem itemSettings = uiFactory.createMenuItem("Ayarlar...");
+        itemSettings.addActionListener(e -> {
+            lastScreen = "EDITOR_SCREEN";
+            cardLayout.show(mainPanel, "SETTINGS_SCREEN");
+        });
+        
         menuBar.add(menuFile);
         menuBar.add(menuEdit);
         menuBar.add(menuView);
+        
+        menuBar.add(itemSettings);
         panel.add(menuBar, BorderLayout.NORTH);
                 
         panel.add(scrollPane, BorderLayout.CENTER);
         
         // auto save (default 30 saniyede bir)
-        javax.swing.Timer autoSaveTimer = new javax.swing.Timer(settings.getAutoSavePeriod(), e -> {
+        javax.swing.Timer autoSaveTimer = new javax.swing.Timer(settings.getAutoSavePeriod() * 1000, e -> {
             String backupPath = EditorSettings.getInstance().getAutoSavePath();
             
             // Sadece metin kutusu boş değilse yedekle
             if (!textArea.getText().trim().isEmpty()) {
-                try (FileWriter writer = new FileWriter(backupPath)) {
+                try (FileWriter writer = new FileWriter(backupPath  + File.separator + "__texteditor_autosave.txt")) {
                     writer.write(textArea.getText());
-                    System.out.println("Arka planda otomatik kayıt alındı: " + backupPath);
+                    System.out.println("Arka planda otomatik kayıt alındı: " + backupPath + File.separator + "__texteditor_autosave.txt");
                 } catch (IOException ex) {
                     System.err.println("Otomatik kayıt başarısız: " + ex.getMessage());
                 }
@@ -245,6 +266,91 @@ public class MainWindow extends JFrame{
         });
         autoSaveTimer.start();
 
+        return panel;
+    }
+    
+     // AYARLAR EKRANI
+    //##########################################
+    private JPanel createSettingsScreen() {
+        JPanel panel = uiFactory.createPanel();
+        panel.setLayout(new GridBagLayout()); // Daha düzenli bir form yapısı için
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        EditorSettings settings = EditorSettings.getInstance();
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        JLabel lblTitle = new JLabel("Uygulama Ayarları");
+        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 20));
+        panel.add(lblTitle, gbc);
+
+        // Word Wrap
+        gbc.gridy = 1; gbc.gridwidth = 1;
+        panel.add(new Label("Sözcük Kaydırma:"), gbc);
+        gbc.gridx = 1;
+        JCheckBox chkWrap = new JCheckBox("Aktif", settings.isWordWrapEnabled());
+        panel.add(chkWrap, gbc);
+
+        // Padding
+        gbc.gridx = 0; gbc.gridy = 2;
+        panel.add(new JLabel("Kenar Boşluğu (px):"), gbc);
+        gbc.gridx = 1;
+        JSpinner spinPadding = new JSpinner(new SpinnerNumberModel(settings.getPadding(), 0, 50, 1));
+        panel.add(spinPadding, gbc);
+
+        // Auto Save Period
+        gbc.gridx = 0; gbc.gridy = 3;
+        panel.add(new JLabel("Oto Kayıt Sıklığı (sn):"), gbc);
+        gbc.gridx = 1;
+        JSpinner spinAutoSave = new JSpinner(new SpinnerNumberModel(settings.getAutoSavePeriod(), 10, 600, 10));
+        panel.add(spinAutoSave, gbc);
+
+        // Auto Save Path
+        gbc.gridx = 0; gbc.gridy = 4;
+        panel.add(new JLabel("Oto Kayıt Klasörü:"), gbc);
+        gbc.gridx = 1;
+        JPanel pathPanel = uiFactory.createPanel(); 
+        pathPanel.setLayout(new BorderLayout(5, 0));
+        String currentPath = settings.getAutoSavePath() != null ? settings.getAutoSavePath() : "";
+        JTextField txtAutoSavePath = new JTextField(currentPath);
+        txtAutoSavePath.setEditable(false);
+        pathPanel.add(txtAutoSavePath, BorderLayout.CENTER);
+
+        // Klasör seçme butonu
+        JButton btnSelectPath = uiFactory.createButton("Seç...");
+        btnSelectPath.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Otomatik Kayıt Klasörünü Seçin");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Sadece klasör seçtirtiyoruz
+
+            int option = chooser.showOpenDialog(mainPanel);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                txtAutoSavePath.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
+        pathPanel.add(btnSelectPath, BorderLayout.EAST);
+
+        panel.add(pathPanel, gbc);
+
+        // 5. Butonlar (gridy değerini 5 yaptık çünkü araya klasör seçimi girdi)
+        gbc.gridx = 0; gbc.gridy = 5;
+        JButton btnSave = uiFactory.createButton("Uygula");
+        btnSave.addActionListener(e -> {
+            settings.setWordWrapEnabled(chkWrap.isSelected());
+            settings.setPadding((int) spinPadding.getValue());
+            settings.setAutoSavePeriod((int) spinAutoSave.getValue());
+            settings.setAutoSavePath(txtAutoSavePath.getText());
+
+            applyThemeDynamically(settings.getTheme()); 
+        });
+        panel.add(btnSave, gbc);
+
+        gbc.gridx = 1;
+        JButton btnBack = uiFactory.createButton("Geri Dön");
+        btnBack.addActionListener(e -> cardLayout.show(mainPanel, lastScreen));
+        panel.add(btnBack, gbc);
+        
         return panel;
     }
     
@@ -289,6 +395,7 @@ public class MainWindow extends JFrame{
         // ekranları yerleştir ve göster
         mainPanel.add(startScreen, "START_SCREEN");
         mainPanel.add(editorPanel, "EDITOR_SCREEN");
+        mainPanel.add(createSettingsScreen(), "SETTINGS_SCREEN");
         cardLayout.show(mainPanel, "EDITOR_SCREEN");
 
         // İŞLETİM SİSTEMİNİ EKRANI ZORLA YENİLEMEYE İT (Görsel bug kalmasın)
