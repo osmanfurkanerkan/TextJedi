@@ -5,6 +5,9 @@
 package com.aitayfa.texteditor.config;
 import java.io.File;
 import java.awt.Color;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 /**
  *
  * @author berkaysarmasoglu
@@ -55,6 +58,57 @@ public class EditorSettings {
             }
         }
         return instance;
+    }
+    
+    // EditorSettings.java içine eklenecek metotlar:
+
+    // Ayarları dosyaya kaydet
+    public void saveToProperties() {
+        java.util.Properties props = new java.util.Properties();
+        
+        props.setProperty("theme", this.theme != null ? this.theme : "Dark Theme");
+        props.setProperty("fontSize", String.valueOf(this.fontSize));
+        props.setProperty("wordWrapEnabled", String.valueOf(this.wordWrapEnabled));
+        props.setProperty("padding", String.valueOf(this.padding));
+        props.setProperty("autoSavePeriod", String.valueOf(this.autoSavePeriod));
+        props.setProperty("autoSavePath", this.autoSavePath != null ? this.autoSavePath : "");
+        
+        // Rengi int olarak (RGB) saklamak en güvenlisidir
+        if (this.highlighterColor != null) {
+            props.setProperty("highlighterColor", String.valueOf(this.highlighterColor.getRGB()));
+        }
+
+        try (java.io.FileOutputStream out = new java.io.FileOutputStream("settings.properties")) {
+            props.store(out, "TextEditor Ayarlari");
+        } catch (Exception e) {
+            System.err.println("Ayarlar kaydedilemedi: " + e.getMessage());
+        }
+    }
+
+    // Uygulama açılırken ayarları yükle
+    public void loadFromProperties() {
+        java.io.File file = new java.io.File("settings.properties");
+        if (file.exists()) {
+            try (java.io.FileInputStream in = new java.io.FileInputStream(file)) {
+                java.util.Properties props = new java.util.Properties();
+                props.load(in);
+
+                this.theme = props.getProperty("theme", "Dark Theme");
+                this.fontSize = Integer.parseInt(props.getProperty("fontSize", "14"));
+                this.wordWrapEnabled = Boolean.parseBoolean(props.getProperty("wordWrapEnabled", "true"));
+                this.padding = Integer.parseInt(props.getProperty("padding", "10"));
+                this.autoSavePeriod = Integer.parseInt(props.getProperty("autoSavePeriod", "30"));
+                this.autoSavePath = props.getProperty("autoSavePath", "");
+                
+                String colorStr = props.getProperty("highlighterColor");
+                if (colorStr != null) {
+                    this.highlighterColor = new java.awt.Color(Integer.parseInt(colorStr));
+                }
+
+            } catch (Exception e) {
+                System.err.println("Ayarlar yuklenemedi, varsayilanlar kullanilacak: " + e.getMessage());
+            }
+        }
     }
     
     // --- Getters ve Setters ---

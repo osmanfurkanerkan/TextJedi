@@ -16,17 +16,13 @@ import javax.swing.SwingUtilities;
 public class TextEditor {
     public static void main(String[] args) {
         EditorSettings settings = EditorSettings.getInstance();
-        //settings.setTheme("Dark Theme");
+        settings.loadFromProperties();
         
         // Swing arayüzlerini güvenli bir şekilde (Thread-Safe) başlatmak için kullanılması zorunludur.
         SwingUtilities.invokeLater(() -> {
             MainWindow window = new MainWindow();
             window.setVisible(true);
         });
-        
-        //  DÜZELTİLECEKLER
-        //  SHAPE MISMATCHING OF LIGHT THEME WITH DARK THEME
-        //  SHADES OF WHITE
-        
+                
     }
 }

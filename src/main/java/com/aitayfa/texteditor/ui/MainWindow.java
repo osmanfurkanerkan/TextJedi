@@ -211,6 +211,7 @@ public class MainWindow extends JFrame{
             JMenuItem sizeItem = uiFactory.createMenuItem(size + " pt");
             sizeItem.addActionListener(e -> {
                 settings.setFontSize(size);
+                settings.saveToProperties();
                 Font currentFont = textArea.getFont();
                 textArea.setFont(new Font(currentFont.getName(), currentFont.getStyle(), size));
             });
@@ -224,6 +225,7 @@ public class MainWindow extends JFrame{
             
             if (newColor != null) { // Kullanıcı iptale basmadıysa
                 settings.setHighlighterColor(newColor);
+                 settings.saveToProperties();
                 textArea.getHighlighter().removeAllHighlights(); 
             }
         });
@@ -354,7 +356,8 @@ public class MainWindow extends JFrame{
             settings.setPadding((int) spinPadding.getValue());
             settings.setAutoSavePeriod((int) spinAutoSave.getValue());
             settings.setAutoSavePath(txtAutoSavePath.getText());
-            applyThemeDynamically(settings.getTheme()); 
+            settings.saveToProperties();
+            applyThemeDynamically(settings.getTheme());
         });
         panel.add(btnSave, gbc);
 
@@ -379,6 +382,7 @@ public class MainWindow extends JFrame{
     private void applyThemeDynamically(String newTheme) {
         EditorSettings settings = EditorSettings.getInstance();
         settings.setTheme(newTheme);
+        settings.saveToProperties();
 
         if (newTheme.equals("Light Theme")) {
             uiFactory = new LightUIFactory();
