@@ -8,7 +8,7 @@ package com.aitayfa.texteditor.ui.factory;
  *
  * @author berkaysarmasoglu
  */
-
+import com.aitayfa.texteditor.config.EditorSettings;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.Border;
@@ -41,6 +41,9 @@ public class DarkUIFactory implements UIFactory {
         textArea.setForeground(new Color(169, 183, 198)); // Açık gri/mavi yazı (IDE stili)
         textArea.setCaretColor(Color.WHITE); // Beyaz imleç
         textArea.setFont(new Font("Consolas", Font.PLAIN, 14));
+        boolean wordWrap = EditorSettings.getInstance().isWordWrapEnabled();
+        textArea.setLineWrap(wordWrap);
+        textArea.setWrapStyleWord(wordWrap);
         return textArea;
     }
     

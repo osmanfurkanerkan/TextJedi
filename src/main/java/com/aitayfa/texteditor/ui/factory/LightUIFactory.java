@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.aitayfa.texteditor.ui.factory;
+import com.aitayfa.texteditor.config.EditorSettings;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.Border;
@@ -39,6 +40,9 @@ public class LightUIFactory implements UIFactory{
         textArea.setForeground(Color.BLACK);
         textArea.setCaretColor(Color.BLACK); // İmleç rengi
         textArea.setFont(new Font("Consolas", Font.PLAIN, 14));
+        boolean wordWrap = EditorSettings.getInstance().isWordWrapEnabled();
+        textArea.setLineWrap(wordWrap);
+        textArea.setWrapStyleWord(wordWrap);
         return textArea;
     }
     
