@@ -71,7 +71,13 @@ public class MainWindow extends JFrame{
 
         // Geçici Event Listener: Yeni Dosyaya tıklayınca Editör ekranına geçiş yap
         btnNewFile.addActionListener(e -> {
-            textArea.setText("");
+            // Singleton ayarlarını sıfırla
+            EditorSettings settings = EditorSettings.getInstance();
+            settings.setCurrentFilePath(null);
+            settings.setModified(false);
+
+            textArea.setText(""); 
+            updateTitle();
             cardLayout.show(mainPanel, "EDITOR_SCREEN");
         });
         
