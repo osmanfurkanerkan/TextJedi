@@ -2,6 +2,7 @@
 /Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/Command.java
 /Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/FindCommand.java
 /Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/OpenFileCommand.java
+/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/ReplaceCommand.java
 /Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/SaveAsFileCommand.java
 /Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/SaveFileCommand.java
 /Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/config/EditorSettings.java
