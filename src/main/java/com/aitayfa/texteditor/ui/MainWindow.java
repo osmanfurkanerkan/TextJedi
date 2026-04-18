@@ -107,13 +107,17 @@ public class MainWindow extends JFrame{
         JMenuBar menuBar = uiFactory.createMenuBar();
         JMenu menuFile = uiFactory.createMenu("Dosya");
         JMenuItem itemSave = uiFactory.createMenuItem("Kaydet");
-        JMenuItem itemBack = uiFactory.createMenuItem("Giriş Ekranına Dön");;
+        JMenuItem itemSaveAs = uiFactory.createMenuItem("Farklı Kaydet");
+        JMenuItem itemBack = uiFactory.createMenuItem("Giriş Ekranına Dön");
         
         Command saveCommand = new SaveFileCommand(this, textArea);
+        Command saveAsCommand = new SaveAsFileCommand(this, textArea);
         itemSave.addActionListener(e -> saveCommand.execute());
+        itemSaveAs.addActionListener(e -> saveAsCommand.execute());
         itemBack.addActionListener(e -> cardLayout.show(mainPanel, "START_SCREEN"));
         
         menuFile.add(itemSave);
+        menuFile.add(itemSaveAs);
         menuFile.addSeparator();
         menuFile.add(itemBack);
         menuBar.add(menuFile);

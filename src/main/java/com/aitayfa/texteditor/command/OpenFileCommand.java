@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.aitayfa.texteditor.command;
+import com.aitayfa.texteditor.config.EditorSettings;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,6 +42,7 @@ public class OpenFileCommand implements Command {
                 
                 // İşlem başarılıysa ekranı (Start -> Editor) değiştir
                 if (onSuccess != null) {
+                    EditorSettings.getInstance().setCurrentFilePath(selectedFile.getAbsolutePath());
                     onSuccess.run();
                 }
                 
