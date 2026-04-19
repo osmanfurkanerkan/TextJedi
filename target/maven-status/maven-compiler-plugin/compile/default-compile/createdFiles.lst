@@ -24,7 +24,9 @@ com/aitayfa/texteditor/command/RedoCommand.class
 com/aitayfa/texteditor/ui/MainWindow.class
 com/aitayfa/texteditor/ui/factory/LightUIFactory$1.class
 com/aitayfa/texteditor/command/NewFileCommand.class
+com/aitayfa/texteditor/command/ExitCommand.class
 com/aitayfa/texteditor/ui/LineNumberView.class
+com/aitayfa/texteditor/ui/MainWindow$4.class
 com/aitayfa/texteditor/ui/MainWindow$1.class
 com/aitayfa/texteditor/ui/factory/DarkUIFactory$2.class
 com/aitayfa/texteditor/command/ReplaceCommand.class

@@ -49,7 +49,7 @@ public class MainWindow extends JFrame{
         // pencerenin genel ayarları
         setTitle("TextEditor");
         setSize(settings.getWindowWidth(), settings.getWindowHeight());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null); // ekranın ortası
         
         // card layout ayarları
@@ -62,6 +62,14 @@ public class MainWindow extends JFrame{
         
         add(mainPanel);
         cardLayout.show(mainPanel, "START_SCREEN"); // çalıştırınca ilk bunu göster
+        
+        // Uygulamadan çıkarken sor
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new ExitCommand(MainWindow.this, textArea).execute();
+            }
+        });
     }
     
     // GİRİŞ EKRANI
