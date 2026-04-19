@@ -14,10 +14,14 @@ import javax.swing.*;
 public class ExitCommand implements Command {
     private MainWindow parent;
     private JTextArea textArea;
+    private Runnable onExit;
+    private Runnable onCancel;
 
-    public ExitCommand(MainWindow parent, JTextArea textArea) {
+    public ExitCommand(MainWindow parent, JTextArea textArea, Runnable onExit, Runnable onCancel) {
         this.parent = parent;
         this.textArea = textArea;
+        this.onExit = onExit;
+        this.onCancel = onCancel;
     }
 
     @Override
@@ -32,17 +36,16 @@ public class ExitCommand implements Command {
                 JOptionPane.WARNING_MESSAGE);
             
             if (option == JOptionPane.YES_OPTION) {
-                // Kaydetmeyi dene, başarılı olursa sistemi kapat
                 new SaveFileCommand(parent, textArea).execute();
-                System.exit(0);
+                onExit.run();
             } else if (option == JOptionPane.NO_OPTION) {
-                // Kaydetmeden doğrudan çık
-                System.exit(0);
+                onExit.run();
+            } else {
+                // CANCEL veya pencere kapatma durumu
+                if (onCancel != null) onCancel.run();
             }
-            // CANCEL veya pencereyi kapatma (X) durumunda hiçbir şey yapma, programda kal
         } else {
-            // Değişiklik yoksa sistemi doğrudan kapat
-            System.exit(0);
+            onExit.run();
         }
     }
 }

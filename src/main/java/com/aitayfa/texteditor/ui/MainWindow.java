@@ -64,12 +64,29 @@ public class MainWindow extends JFrame{
         cardLayout.show(mainPanel, "START_SCREEN"); // çalıştırınca ilk bunu göster
         
         // Uygulamadan çıkarken sor
+        // çarpı tuşu ile normal kapatma
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
-                new ExitCommand(MainWindow.this, textArea).execute();
+                new ExitCommand(MainWindow.this, textArea, 
+                    () -> System.exit(0), // Çıkış onaylanırsa sistemi kapat
+                    () -> {}              // İptal edilirse hiçbir şey yapma
+                ).execute();
             }
         });
+
+        // force quit (MacOS - COMMAND + Q)
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER)) {
+            Desktop.getDesktop().setQuitHandler((e, response) -> {
+                new ExitCommand(MainWindow.this, textArea, 
+                    () -> {
+                        response.performQuit(); // İşletim sistemine "kapanabilirsin" de
+                        System.exit(0);
+                    }, 
+                    () -> response.cancelQuit() // İşletim sistemine "kapanmayı iptal et" de
+                ).execute();
+            });
+        }
     }
     
     // GİRİŞ EKRANI
