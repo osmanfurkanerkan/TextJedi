@@ -187,12 +187,14 @@ public class MainWindow extends JFrame{
         // EDIT MENU
         JMenu menuEdit = uiFactory.createMenu("Düzenle");
         JMenuItem itemUndo = uiFactory.createMenuItem("Geri Al");
+        JMenuItem itemRedo = uiFactory.createMenuItem("Yinele");
         JMenuItem itemFind = uiFactory.createMenuItem("Bul");
         JMenuItem itemReplace = uiFactory.createMenuItem("Değiştir");
         JMenuItem itemClearHighlights = uiFactory.createMenuItem("Arama Vurgularını Temizle");
         JMenuItem itemAI = uiFactory.createMenuItem("AI Yardımı");
 
         Command undoCommand = new UndoCommand(undoManager);
+        Command redoCommand = new RedoCommand(undoManager);
         Command findCommand = new FindCommand(this, textArea);
         Command replaceCommand = new ReplaceCommand(this, textArea, undoManager);
         Command aiCommand = new AICommand(this, textArea, undoManager);
@@ -200,6 +202,9 @@ public class MainWindow extends JFrame{
         // COMMAND + Z , CTRL + Z
         itemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemUndo.addActionListener(e -> undoCommand.execute());
+        // COMMAND + Y , CTRL + Y
+        itemRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        itemRedo.addActionListener(e -> redoCommand.execute());
         // COMMAND + F , CTRL + F
         itemFind.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         itemFind.addActionListener(e -> findCommand.execute());
@@ -211,6 +216,7 @@ public class MainWindow extends JFrame{
         itemClearHighlights.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
         itemAI.addActionListener(e -> aiCommand.execute());
         menuEdit.add(itemUndo);
+        menuEdit.add(itemRedo);
         menuEdit.add(itemFind);
         menuEdit.add(itemReplace);
         menuEdit.add(itemClearHighlights);
