@@ -24,4 +24,5 @@ public interface UIFactory {
     JCheckBox createCheckBox(String text, boolean selected);
     JSpinner createSpinner(int value, int min, int max, int step);
     JTextField createTextField(String text);
+    JComponent createLineNumberView(JTextArea textArea);
 }

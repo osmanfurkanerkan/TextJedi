@@ -30,6 +30,7 @@ public class EditorSettings {
     private String currentFilePath;
     private Color highlighterColor;
     private boolean modified;
+    private boolean showLineNumbers;
     
     // Constructor'ı private yapıyoruz ki dışarıdan 'new' anahtar kelimesiyle başka bir kopya üretilemesin.
     private EditorSettings() {
@@ -45,6 +46,7 @@ public class EditorSettings {
         this.currentFilePath = null;
         this.highlighterColor = new Color(150, 120, 30);
         this.modified = false;
+        this.showLineNumbers = true;
     }
     
     // Sistemin her yerinden ayarlara ulaşmak için kullanılacak tek giriş noktası
@@ -150,5 +152,8 @@ public class EditorSettings {
         if (currentFilePath == null) return "Yeni Belge";
         return new java.io.File(currentFilePath).getName();
     }
+    
+    public boolean isShowLineNumbers() { return showLineNumbers; }
+    public void setShowLineNumbers(boolean showLineNumbers) { this.showLineNumbers = showLineNumbers; }
 
 }

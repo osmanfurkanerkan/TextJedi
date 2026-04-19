@@ -4,6 +4,7 @@
  */
 package com.aitayfa.texteditor.ui.factory;
 import com.aitayfa.texteditor.config.EditorSettings;
+import com.aitayfa.texteditor.ui.LineNumberView;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.Border;
@@ -161,4 +162,12 @@ public class LightUIFactory implements UIFactory{
         return textField;
     }
     
+    @Override
+    public JComponent createLineNumberView(JTextArea textArea) {
+        LineNumberView view = new LineNumberView(textArea);
+        view.setBackground(new Color(240, 240, 240)); // Açık arka plan
+        view.setForeground(new Color(100, 100, 100)); // Koyu gri yazılar
+        view.setOpaque(true);
+        return view;
+    }
 }

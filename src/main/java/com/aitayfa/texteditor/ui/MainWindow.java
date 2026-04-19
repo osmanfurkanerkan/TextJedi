@@ -142,6 +142,10 @@ public class MainWindow extends JFrame{
         // Yazıların taşmaması ve scroll (kaydırma) çubuğu çıkması için JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setBorder(uiFactory.createBorder());
+        JComponent lineNumberView = uiFactory.createLineNumberView(textArea);
+        lineNumberView.setVisible(settings.isShowLineNumbers());
+        scrollPane.setRowHeaderView(lineNumberView);
+        scrollPane.getRowHeader().setBackground(lineNumberView.getBackground());
         
         // MENU BAR
         JMenuBar menuBar = uiFactory.createMenuBar();
@@ -336,23 +340,30 @@ public class MainWindow extends JFrame{
         gbc.gridx = 1;
         JCheckBox chkWrap = uiFactory.createCheckBox("Aktif", settings.isWordWrapEnabled());
         panel.add(chkWrap, gbc);
+        
+        // Line Numbers
+        gbc.gridx = 0; gbc.gridy = 2;
+        panel.add(uiFactory.createLabel("Satır Numaraları:"), gbc);
+        gbc.gridx = 1;
+        JCheckBox chkLineNumbers = uiFactory.createCheckBox("Göster", settings.isShowLineNumbers());
+        panel.add(chkLineNumbers, gbc);
 
         // Padding
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0; gbc.gridy = 3;
         panel.add(uiFactory.createLabel("Kenar Boşluğu (px):"), gbc);
         gbc.gridx = 1;
         JSpinner spinPadding = uiFactory.createSpinner(settings.getPadding(), 0, 50, 1);
         panel.add(spinPadding, gbc);
 
         // Auto Save Period
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0; gbc.gridy = 4;
         panel.add(uiFactory.createLabel("Oto Kayıt Sıklığı (sn):"), gbc);
         gbc.gridx = 1;
         JSpinner spinAutoSave = uiFactory.createSpinner(settings.getAutoSavePeriod(), 10, 600, 10);
         panel.add(spinAutoSave, gbc);
 
         // Auto Save Path
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0; gbc.gridy = 5;
         panel.add(uiFactory.createLabel("Oto Kayıt Klasörü:"), gbc);
 
         gbc.gridx = 1;
@@ -382,7 +393,7 @@ public class MainWindow extends JFrame{
 
         panel.add(pathPanel, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridx = 0; gbc.gridy = 6;
         JButton btnBack = uiFactory.createButton("Geri Dön");
         btnBack.addActionListener(e -> cardLayout.show(mainPanel, lastScreen));
         panel.add(btnBack, gbc);
@@ -391,6 +402,7 @@ public class MainWindow extends JFrame{
         JButton btnSave = uiFactory.createButton("Uygula");
         btnSave.addActionListener(e -> {
             settings.setWordWrapEnabled(chkWrap.isSelected());
+            settings.setShowLineNumbers(chkLineNumbers.isSelected());
             settings.setPadding((int) spinPadding.getValue());
             settings.setAutoSavePeriod((int) spinAutoSave.getValue());
             settings.setAutoSavePath(txtAutoSavePath.getText());

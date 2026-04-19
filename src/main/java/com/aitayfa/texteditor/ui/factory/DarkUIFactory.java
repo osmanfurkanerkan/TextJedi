@@ -9,6 +9,7 @@ package com.aitayfa.texteditor.ui.factory;
  * @author berkaysarmasoglu
  */
 import com.aitayfa.texteditor.config.EditorSettings;
+import com.aitayfa.texteditor.ui.LineNumberView;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.Border;
@@ -161,5 +162,14 @@ public class DarkUIFactory implements UIFactory {
         textField.setCaretColor(Color.WHITE);
         textField.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 80)));
         return textField;
+    }
+    
+    @Override
+    public JComponent createLineNumberView(JTextArea textArea) {
+        LineNumberView view = new LineNumberView(textArea);
+        view.setBackground(new Color(50, 50, 50)); // Koyu arka plan
+        view.setForeground(new Color(150, 150, 150)); // Açık gri yazılar
+        view.setOpaque(true);
+        return view;
     }
 }
