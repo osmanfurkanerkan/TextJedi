@@ -1,2 +1,4 @@
-settings.properties
-.env
+target/
+*.class
+.idea/
+.vscode/

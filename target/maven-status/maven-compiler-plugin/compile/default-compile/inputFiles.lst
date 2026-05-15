@@ -1,20 +1,20 @@
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/TextEditor.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/AICommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/BackToStartCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/Command.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/ExitCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/FindCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/NewFileCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/OpenFileCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/RedoCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/ReplaceCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/SaveAsFileCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/SaveFileCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/command/UndoCommand.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/config/EditorSettings.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/iterator/TextIterator.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/ui/LineNumberView.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/ui/MainWindow.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/ui/factory/DarkUIFactory.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/ui/factory/LightUIFactory.java
-/Users/berkaysarmasoglu/Documents/class materials/Y2T2/Advanced Object Oriented Programming/Project1/TextEditor/src/main/java/com/aitayfa/texteditor/ui/factory/UIFactory.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\AICommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\BackToStartCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\Command.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\ExitCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\FindCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\NewFileCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\OpenFileCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\RedoCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\ReplaceCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\SaveAsFileCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\SaveFileCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\command\UndoCommand.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\config\EditorSettings.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\iterator\TextIterator.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\TextEditor.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\ui\factory\DarkUIFactory.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\ui\factory\LightUIFactory.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\ui\factory\UIFactory.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\ui\LineNumberView.java
+C:\Users\Osman Furkan Erkan\TextEditor\src\main\java\com\aitayfa\texteditor\ui\MainWindow.java
